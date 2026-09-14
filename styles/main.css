@@ -1,0 +1,443 @@
+/* ==========================================================================
+   WriteToFire - Main Stylesheet
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #07070a;
+  color: #e5e5e5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ==========================================================================
+   焚き火ステージ (常時配置 / 背景奥)
+   ========================================================================== */
+#stage-campfire {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 520px;
+  height: 400px;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 30s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#stage-campfire.extinguishing {
+  opacity: 0 !important;
+}
+
+.campfire-structure {
+  position: absolute;
+  bottom: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  height: 100px;
+}
+
+.wood-log {
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.8));
+}
+
+.wood-ember {
+  filter: drop-shadow(0 0 10px #ff4400);
+  animation: emberGlow 1.8s infinite ease-in-out alternate;
+}
+
+@keyframes emberGlow {
+  0% { opacity: 0.75; filter: drop-shadow(0 0 6px #ff3300); }
+  100% { opacity: 1.0; filter: drop-shadow(0 0 14px #ff7700); }
+}
+
+#campfireCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ==========================================================================
+   状態共通コンテナ
+   ========================================================================== */
+.app-state {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.app-state.active {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ==========================================================================
+   State 1: 待機画面 (Standby)
+   ========================================================================== */
+#state-standby {
+  z-index: 20;
+}
+
+.standby-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(18, 18, 28, 0.72);
+  border: 1px solid rgba(60, 60, 85, 0.5);
+  border-radius: 20px;
+  padding: 28px 36px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  max-width: 90vw;
+}
+
+.standby-title {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: #f0f0f5;
+  margin-bottom: 6px;
+}
+
+.standby-subtitle {
+  font-size: 13px;
+  color: #8a8a9e;
+  margin-bottom: 24px;
+}
+
+.wood-selector-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  color: #d1d1db;
+  margin-bottom: 12px;
+}
+
+.wood-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: rgba(32, 32, 48, 0.85);
+  border: 1px solid #4a4a68;
+  color: #ff9955;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 6px 30px 6px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ff9955' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+.wood-select:focus {
+  border-color: #ff7733;
+}
+
+.wood-estimate {
+  font-size: 13px;
+  color: #a0a0b8;
+  margin-bottom: 28px;
+}
+
+.btn-ignite {
+  background: linear-gradient(135deg, #ff6611 0%, #dd4400 100%);
+  border: 1px solid #ff8833;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  padding: 12px 42px;
+  border-radius: 26px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(230, 80, 10, 0.45);
+  transition: all 0.25s ease;
+}
+
+.btn-ignite:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 26px rgba(255, 100, 20, 0.65);
+  border-color: #ffaa55;
+}
+
+.btn-ignite:active {
+  transform: translateY(1px);
+}
+
+/* ==========================================================================
+   State 2: 執筆画面 (Writing)
+   ========================================================================== */
+#state-writing {
+  z-index: 10;
+}
+
+.letter-wrapper {
+  position: relative;
+  width: 240px;
+  height: 328px;
+  max-width: 90vw;
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
+              opacity 0.8s ease,
+              width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
+              height 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.letter-card {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  /* 投げる紙(scripts/paper-bake.js)と同じ7本の等間隔罫線（58px開始、38px間隔）を純粋なCSSで描画 */
+  background-image: linear-gradient(
+    to bottom,
+    transparent 57px, #e2e8f0 57px, #e2e8f0 58px,
+    transparent 58px, transparent 95px, #e2e8f0 95px, #e2e8f0 96px,
+    transparent 96px, transparent 133px, #e2e8f0 133px, #e2e8f0 134px,
+    transparent 134px, transparent 171px, #e2e8f0 171px, #e2e8f0 172px,
+    transparent 172px, transparent 209px, #e2e8f0 209px, #e2e8f0 210px,
+    transparent 210px, transparent 247px, #e2e8f0 247px, #e2e8f0 248px,
+    transparent 248px, transparent 285px, #e2e8f0 285px, #e2e8f0 286px,
+    transparent 286px
+  );
+  background-size: calc(100% - 24px) 100%;
+  background-position: center 0;
+  background-repeat: no-repeat;
+  padding: 24px 12px 34px;
+  border-radius: 6px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.letter-textarea {
+  width: 100%;
+  height: 266px;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 38px;
+  color: #2d3748;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-break: break-all;
+  padding: 0;
+  margin: 0;
+}
+
+/* 便箋下部コントロールバー */
+.letter-footer {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.letter-page-info {
+  font-size: 12px;
+  color: #a0aec0;
+  pointer-events: auto;
+}
+
+.letter-actions {
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.btn-icon {
+  background: rgba(230, 235, 245, 0.85);
+  border: 1px solid #cbd5e0;
+  color: #4a5568;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-icon:hover:not(:disabled) {
+  background: #edf2f7;
+  color: #2d3748;
+  border-color: #a0aec0;
+}
+
+.btn-icon:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ページ送り矢印（カード左右外側） */
+.page-arrow-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(25, 25, 38, 0.75);
+  border: 1px solid rgba(65, 65, 90, 0.6);
+  color: #d1d1e0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+
+.page-arrow-btn:hover:not(:disabled) {
+  background: rgba(45, 45, 65, 0.9);
+  color: #fff;
+  border-color: #ff7733;
+}
+
+.page-arrow-btn:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+}
+
+.page-arrow-btn.prev {
+  left: -44px;
+}
+
+.page-arrow-btn.next {
+  right: -44px;
+}
+
+@media (max-width: 480px) {
+  .page-arrow-btn.prev { left: -14px; }
+  .page-arrow-btn.next { right: -14px; }
+}
+
+/* ==========================================================================
+   State 3: 投擲・燃焼 (Throwing)
+   ========================================================================== */
+#state-throwing {
+  z-index: 15;
+}
+
+#viewport {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+#paper-layer, .paper-sheet {
+  position: absolute;
+  width: 150px;
+  height: 205px;
+  cursor: grab;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+  pointer-events: auto;
+  transform: translate3d(0px, 150px, 0px);
+  touch-action: none;
+}
+
+#paper-layer:active, .paper-sheet:active {
+  cursor: grabbing;
+}
+
+.bake-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150px;
+  height: 205px;
+  border-radius: 6px;
+  transition: box-shadow 3.5s ease-out;
+}
+
+.canvas-front {
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
+}
+
+.canvas-back {
+  transform: rotateY(180deg);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
+}
+
+.burning .bake-canvas {
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0);
+}
+
+.throw-hint {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 13px;
+  pointer-events: none;
+  z-index: 10;
+  white-space: nowrap;
+  letter-spacing: 1px;
+  transition: opacity 0.4s ease;
+}
+
+.throw-hint.hidden {
+  opacity: 0;
+}
+
+/* ==========================================================================
+   空間遷移: 執筆完了時に便箋が画面中央下・小さめへスケールダウン
+   ========================================================================== */
+.letter-wrapper.shrink-to-throw {
+  transform: translate3d(0px, 150px, 0px) scale(0.625);
+  opacity: 0;
+  pointer-events: none;
+}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>WriteToFire - 不満を書いて、火に焚べる</title>
+  <meta name="description" content="日常で感じた不満やモヤモヤを静かに書き出し、火に焚べて手放すWebサービス。">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+  <!-- 焚き火ステージ (背景奥に常時配置) -->
+  <div id="stage-campfire">
+    <div class="campfire-structure">
+      <svg viewBox="0 0 220 100" width="220" height="100">
+        <!-- 1. 交差する薪（奥層） -->
+        <g class="wood-log" transform="rotate(18, 110, 72)">
+          <rect x="35" y="65" width="150" height="14" rx="6" fill="#1e130d" stroke="#0e0805" stroke-width="1.5" />
+          <line x1="50" y1="71" x2="165" y2="71" stroke="#2d1d14" stroke-width="1.5" stroke-dasharray="20,10,15,5" />
+        </g>
+
+        <g class="wood-log" transform="rotate(-22, 110, 72)">
+          <rect x="30" y="66" width="160" height="13" rx="6" fill="#241710" stroke="#0e0805" stroke-width="1.5" />
+          <line x1="45" y1="72" x2="175" y2="72" stroke="#362217" stroke-width="1.5" stroke-dasharray="15,8,25,6" />
+        </g>
+
+        <!-- 3. 小石・炭・火種（薪の間のアクセント） -->
+        <circle cx="85" cy="80" r="5" fill="#18110c" />
+        <circle cx="138" cy="78" r="6" fill="#140d09" />
+        <circle cx="110" cy="83" r="4" fill="#22120b" />
+        <circle cx="95" cy="76" r="3.5" fill="#ff3300" class="wood-ember" />
+        <circle cx="125" cy="75" r="3" fill="#ff5500" class="wood-ember" />
+
+        <!-- 4. 手前の太い薪（最前面） -->
+        <g class="wood-log" transform="rotate(4, 110, 78)">
+          <rect x="40" y="72" width="140" height="15" rx="7" fill="#2b1a11" stroke="#120a06" stroke-width="1.5" />
+          <line x1="55" y1="78" x2="160" y2="78" stroke="#3d2519" stroke-width="2" stroke-dasharray="18,12,30,8" />
+          <ellipse cx="44" cy="79.5" rx="4" ry="6" fill="#382216" />
+          <ellipse cx="176" cy="79.5" rx="4" ry="6" fill="#1d110b" />
+        </g>
+      </svg>
+    </div>
+    <canvas id="campfireCanvas"></canvas>
+  </div>
+
+  <!-- State 1: 待機画面 (Standby) -->
+  <div id="state-standby" class="app-state active">
+    <div class="standby-card">
+      <h1 class="standby-title">WriteToFire</h1>
+      <p class="standby-subtitle">不満を書いて、火に焚べる</p>
+      
+      <div class="wood-selector-row">
+        <span>薪を</span>
+        <select id="woodSelect" class="wood-select">
+          <option value="1">1本</option>
+          <option value="3" selected>3本</option>
+          <option value="5">5本</option>
+        </select>
+        <span>焚べる</span>
+      </div>
+      
+      <div id="woodEstimate" class="wood-estimate">目安 5分</div>
+      
+      <button type="button" id="btnIgnite" class="btn-ignite">着火</button>
+    </div>
+  </div>
+
+  <!-- State 2: 執筆画面 (Writing) -->
+  <div id="state-writing" class="app-state">
+    <div id="letterWrapper" class="letter-wrapper">
+      <button type="button" id="btnPrevPage" class="page-arrow-btn prev" title="前のページ">◀</button>
+      
+      <div class="letter-card">
+        <textarea id="letterTextarea" class="letter-textarea" placeholder="思いつくまま、ここに置いていってください..." spellcheck="false"></textarea>
+        
+        <div class="letter-footer">
+          <span id="pageInfo" class="letter-page-info">1 / 1</span>
+          <div class="letter-actions">
+            <button type="button" id="btnAddPage" class="btn-icon" title="白紙のページを追加">＋</button>
+          </div>
+        </div>
+      </div>
+      
+      <button type="button" id="btnNextPage" class="page-arrow-btn next" title="次のページ">▶</button>
+    </div>
+  </div>
+
+  <!-- State 3: 投擲画面 (Throwing) -->
+  <div id="state-throwing" class="app-state">
+    <div id="viewport">
+      <div id="paper-layer">
+        <div id="dom-input-card" style="position:absolute;width:100%;height:100%;background:#ffffff;background-image:repeating-linear-gradient(transparent,transparent 23px,#e2e8f0 23px,#e2e8f0 24px);padding:14px 12px;border-radius:6px;box-shadow:0 14px 32px rgba(0,0,0,0.55);display:flex;flex-direction:column;pointer-events:none;">
+          <div style="font-size:11px;color:#a0aec0;margin-bottom:8px;">手放す言葉</div>
+          <div style="width:100%;height:2px;background:#edf2f7;"></div>
+        </div>
+      </div>
+      <div id="throwHint" class="throw-hint">上にスワイプして火に焚べる</div>
+    </div>
+  </div>
+
+  <!-- スクリプト -->
+  <script src="scripts/campfire.js"></script>
+  <script src="scripts/audio.js"></script>
+  <script src="scripts/paper-bake.js"></script>
+  <script src="scripts/paper-burn.js"></script>
+  <script src="scripts/app.js"></script>
+</body>
+</html>

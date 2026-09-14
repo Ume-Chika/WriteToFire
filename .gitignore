@@ -1,0 +1,14 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Development / Prototyping Mocks
+mocks/
+
+# Internal documentation (keep in vault / local only)
+# docs/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp

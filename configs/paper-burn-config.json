@@ -1,0 +1,29 @@
+{
+  "physics": {
+    "drag": 0.035,
+    "gravity": 0.22,
+    "terminal": 2.8,
+    "sway": 1.5,
+    "tumble": 0.6,
+    "rollAmp": 24,
+    "yawDrift": 0.3
+  },
+  "throw": {
+    "minSwipeDelta": -30,
+    "vxFactor": 0.035,
+    "vyFactor": 0.038,
+    "vyMin": -6.5,
+    "vzFactor": 0.08,
+    "vzMin": 12,
+    "spreadX": 3,
+    "spreadY": 1.4,
+    "spreadZ": 3.2
+  },
+  "burn": {
+    "duration": 3600,
+    "seedsCount": 5,
+    "flareUpIntensity": 2.8,
+    "sinkSpeed": 0.11,
+    "ignitionY": 55
+  }
+}

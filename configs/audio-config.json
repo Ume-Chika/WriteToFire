@@ -1,0 +1,32 @@
+{
+  "masterVol": 0.7,
+  "rumble": {
+    "vol": 0.4,
+    "tone": 240,
+    "air": 0.25,
+    "speed": 2.4
+  },
+  "crackle": {
+    "vol": 0.1,
+    "rate": 13,
+    "rateJitter": 0.85,
+    "pitch": 2800,
+    "pitchJitter": 0.7,
+    "decay": 3.5
+  },
+  "pop": {
+    "vol": 0.75,
+    "rate": 0.5,
+    "rateJitter": 0.7,
+    "sharpness": 3.5,
+    "pitchJitter": 0.6,
+    "body": 0.4
+  },
+  "burst": {
+    "vol": 0.85,
+    "interval": 16,
+    "intervalJitter": 0.6,
+    "thump": 0.6,
+    "decay": 65
+  }
+}
