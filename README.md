@@ -1,7 +1,6 @@
 # WriteToFire
 
-> **不満を書いて、火に焚べる。**  
-> 日常のモヤモヤや手放したい思考を静かに書き出し、焚き火に投げ入れて手放すセルフケア・Webアプリケーション。
+> 手放したい思考を静かに書き出し、焚き火に投げ入れて手放すセルフケア・Webアプリケーション。
 
 **Web Site**: [https://ume-chika.github.io/WriteToFire/](https://ume-chika.github.io/WriteToFire/)  
 **Repository**: [https://github.com/Ume-Chika/WriteToFire](https://github.com/Ume-Chika/WriteToFire)
